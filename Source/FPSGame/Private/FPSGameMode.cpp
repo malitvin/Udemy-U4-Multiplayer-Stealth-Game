@@ -16,12 +16,12 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn* Instigator)
+void AFPSGameMode::CompleteMission(APawn* Instigator, bool bMissionSuccess)
 {
 	if (Instigator)
 	{
 		Instigator->DisableInput(nullptr);
-		OnMissionCompleted(Instigator);
+		OnMissionCompleted(Instigator,bMissionSuccess);
 
 		if (SpectatingViewpointClass)
 		{

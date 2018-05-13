@@ -45,7 +45,7 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent * OverlappedComponent
 		if (GM)
 		{
 			//UE_LOG(LogTemp, Log, TEXT("Overlapped with Extraction Zone"));
-			GM->CompleteMission(character);
+			GM->CompleteMission(character,true);
 		}
 	}
 	else
