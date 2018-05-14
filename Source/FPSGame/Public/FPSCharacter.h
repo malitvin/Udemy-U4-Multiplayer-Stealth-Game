@@ -67,6 +67,9 @@ protected:
 	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerFire();
+
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 public:

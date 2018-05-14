@@ -83,7 +83,7 @@ void AFPSAIGuard::onNoiseHeard(APawn * Instigator, const FVector & Location, flo
 
 void AFPSAIGuard::ResetOrientation()
 {
-	if (GuardState != EAIState::Alerted)
+	if (GuardState == EAIState::Alerted)
 	{
 		return;
 	}
