@@ -48,6 +48,21 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 
+void AFPSCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//if not locally controlled update mesh component
+	if (!IsLocallyControlled())
+	{
+		FRotator NewRot = CameraComponent->RelativeRotation;
+		//pitch can't be negative
+		NewRot.Pitch = RemoteViewPitch * 360.0f / 255.0f;
+		NewRot.Pitch = FMath::ClampAngle(NewRot.Pitch, -89.0f, 89.0f);
+		CameraComponent->SetRelativeRotation(NewRot);
+	}
+}
+
 void AFPSCharacter::Fire()
 {
 	ServerFire();

@@ -79,5 +79,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return CameraComponent; }
 
+	virtual void Tick(float DeltaTime) override;
+
 };
 
