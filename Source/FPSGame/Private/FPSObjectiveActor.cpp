@@ -25,6 +25,8 @@ void AFPSObjectiveActor::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayEffects();
+
+	SetReplicates(true);
 }
 
 void AFPSObjectiveActor::PlayEffects()
@@ -39,11 +41,15 @@ void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	PlayEffects();
 
-	AFPSCharacter* MyCharacter = Cast<AFPSCharacter>(OtherActor);
-	if (MyCharacter)
+	//Only run as server
+	if (Role == ROLE_Authority)
 	{
-		MyCharacter->bIsCarryingObjective = true;
-		Destroy();
+		AFPSCharacter* MyCharacter = Cast<AFPSCharacter>(OtherActor);
+		if (MyCharacter)
+		{
+			MyCharacter->bIsCarryingObjective = true;
+			Destroy();
+		}
 	}
 }
 
