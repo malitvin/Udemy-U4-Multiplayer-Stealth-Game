@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
 #include "AI/Navigation/NavigationSystem.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AFPSAIGuard::AFPSAIGuard()
@@ -49,7 +50,6 @@ void AFPSAIGuard::OnPawnSeen(APawn * SeenPawn)
 	}
 
 	SetGuardState(EAIState::Alerted);
-
 	//UE_LOG(LogTemp, Warning, TEXT("Seen Player"));
 	//DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.0f, 12, FColor::Red, false, 10.0f);
 }
@@ -98,6 +98,11 @@ void AFPSAIGuard::ResetOrientation()
 	}
 }
 
+void AFPSAIGuard::OnRep_GuardState()
+{
+	OnStateChanged(GuardState);
+}
+
 void AFPSAIGuard::SetGuardState(EAIState newState)
 {
 	if (GuardState == newState)
@@ -105,7 +110,9 @@ void AFPSAIGuard::SetGuardState(EAIState newState)
 		return;
 	}
 
-	GuardState = newState;
+	GuardState = newState; //set on server
+	OnRep_GuardState();
+
 	OnStateChanged(GuardState);
 }
 
@@ -139,5 +146,12 @@ void AFPSAIGuard::MoveToNextPatrolPoint()
 	}
 
 	UNavigationSystem::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
+}
+
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
 }
 
